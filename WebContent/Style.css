@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+html,body{
+	height:100%;
+	margin:0;
+}
+section{
+	height:100%;
+}
+#top, #bottom{
+	width: 1280px;
+}
+#center{
+	background-image:url('image/index.png');
+	height : 720px;
+	width: 1280px;
+	/* -webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover; */
+  	background-size: cover;
+	background-repeat : no-repeat;
+}
+#sectionMain{
+	position : relative;
+	border: none;
+	height : 720px;
+	width: 1280px;
+	
+}
+#iframeMain{
+	border:none;
+	display: block;
+	border: none;
+	height : 100%;
+	width: 100%;
+}
+#top{
+	
+	
+}
+#bottom{
+
+	
+}
+#category{
+	width: 1280px;
+}
+#bottomMessage{
+	width: 1280px;
+}

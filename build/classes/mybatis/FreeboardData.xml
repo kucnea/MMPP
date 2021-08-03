@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FreeboardData"> 
+
+<select id="getCount" resultType="int">
+	select count(*) from freeboardData
+</select>	
+
+<select id="getCountSD" resultType="int" parameterType="String">
+	select count(*) from freeboardData where (${option}) like  '%${search}%'
+</select>	
+
+<select id="getList" fetchSize="1000" resultType="vo.FreeboardData">
+	<![CDATA[
+		select * from
+		(select  rownum as R, T.* 
+		from freeboardData T where rownum<=#{endNo}) where #{startNo}<=R ORDER BY idx DESC
+ 	]]>
+</select>
+
+<select id="getListSD" fetchSize="1000" resultType="vo.FreeboardData" parameterType="java.util.HashMap">
+	<![CDATA[
+		select * from
+		(select rownum as R, T.* 
+		from (select * from freeboardData where (${option}) like '%${search}%') T where rownum<=#{endNo}) where #{startNo}<=R
+ 	]]>
+</select>
+
+<update id="updateCount" parameterType="int">
+	update freeboardData set READCOUNT=READCOUNT+1 where idx=#{idx}
+</update>	
+
+<select id="selectByIdx" resultType="vo.FreeboardData" parameterType="int">
+	select * from freeboardData where idx=#{idx}
+</select>	
+
+<insert id="insert" parameterType="vo.FreeboardData">
+	insert into freeboardData(idx,userId,subject,content,readcount,wdate,commentCount)
+	values (idx.nextval,#{userId},#{subject},#{content},'0',#{wdate},'0')
+</insert>
+
+<update id="update" parameterType="vo.FreeboardData"> <!-- 제목,내용 수정-->
+update freeboardData set subject=#{subject},content=#{content} 
+where idx=#{idx}
+</update>
+
+<delete id="delete" parameterType="int">
+delete from freeboardData where idx=#{idx}
+</delete>
+
+
+</mapper>

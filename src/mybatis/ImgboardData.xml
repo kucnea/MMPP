@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ImgboardData"> 
+
+<select id="imgGetCount" resultType="int">
+	select count(*) from imgboardData
+</select>	
+
+<select id="imgGetList" fetchSize="1000" resultType="vo.ImgboardData">
+	<![CDATA[
+		select * from
+		(select  rownum as R, T.* 
+		from imgboardData T where rownum<=#{endNo}) where #{startNo}<=R ORDER BY imgIdx DESC
+ 	]]>
+</select>
+
+<select id="imgSelectByIdx" resultType="vo.ImgboardData" parameterType="int">
+	select * from imgboardData where imgIdx=#{imgIdx}
+</select>	
+
+<select id="selectPointByImgIdx" resultType="int" parameterType="int">
+	select imgPoint from imgboardData where imgIdx=#{imgIdx}
+</select>
+
+<select id="getUserId" resultType="String" parameterType="int">
+	select imgUserId from imgboardData where imgIdx=#{imgIdx}
+</select>
+
+<delete id="imgDelete" parameterType="int">
+	delete from imgboardData where imgIdx=#{imgIdx}
+</delete>
+
+<insert id="imgInsert" parameterType="vo.ImgboardData">
+	insert into imgboardData(imgIdx,imgName,imgId,imgboardSubject,imgboardDetail,imgUserId,imgPoint,wdate)
+	values (imgIdx.nextval,#{imgName},#{imgId},#{imgboardSubject},#{imgboardDetail},#{imgUserId},#{imgPoint},#{wdate})
+</insert>
+
+<update id="imgUpdate" parameterType="vo.ImgboardData"> <!-- 제목,내용 수정-->
+	update imgboardData set imgName=#{imgName},imgId=#{imgId},imgboardSubject=#{imgboardSubject},imgboardDetail=#{imgboardDetail}, imgPoint=#{imgPoint}
+	where imgIdx=#{imgIdx}
+</update>
+
+
+
+</mapper>
+
+
+

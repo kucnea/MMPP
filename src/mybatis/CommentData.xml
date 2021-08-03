@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommentData"> 
+
+	<select id="getCmtCnt" resultType="int" parameterType="int">
+		SELECT count(*) FROM freeboardData_comment WHERE mref=#{mref}
+	</select>
+
+	<update id="updateCmtCnt" parameterType="java.util.HashMap">
+		UPDATE freeboardData set commentCount=#{cmtcnt} where idx=#{idx}
+	</update>
+	
+	<update id="updateCmt" parameterType="java.util.HashMap">
+		UPDATE freeboardData_comment set content=#{newContent} where cmtidx=#{cmtidx}
+	</update>
+	
+	<select id="getCmtList" resultType="vo.CommentData" parameterType="int">
+		SELECT * FROM freeboardData_comment WHERE mref=#{mref}
+	</select>
+	
+	<insert id="cmtInsert" parameterType="vo.CommentData">  
+		INSERT INTO freeboardData_comment (cmtIdx,mref,userId,content,wdate)
+		VALUES (cmtIdx.nextval,#{mref},#{userId},#{content},#{wdate})
+	</insert>
+	
+	<delete id="commentDelete" parameterType="java.util.HashMap">
+		delete from freeboardData_comment where cmtIdx=#{cmtIdx} and mref=#{mref}
+	</delete>
+	
+	<delete id="deleteFreeboard" parameterType="int">
+		delete from freeboardData_comment where mref=#{idx}
+	</delete>
+	
+	
+</mapper>

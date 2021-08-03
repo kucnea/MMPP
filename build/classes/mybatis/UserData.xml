@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserData">
+
+	<select id="login" resultType="vo.UserData" parameterType="java.util.HashMap">
+		select * from userData where userId=#{id} and userPw=#{password}
+	</select>
+	
+	
+	<insert id="addUserData" parameterType="vo.UserData" >
+			insert into UserData(userId, userPw, userGender, userPhoneNumber, userPoint, userAcc1, userAcc1Pw) 
+			values (#{userId},#{userPw},#{userGender},#{userPhoneNumber},#{userPoint},#{userAcc1},#{userAcc1Pw})
+	</insert>
+	
+	
+	<select id="checkUserId" resultType="int" parameterType="String">
+		SELECT count(*) FROM userData WHERE userId=#{userId}	
+	</select>
+	
+	<select id="findId" resultType="vo.UserData" parameterType="String">
+		SELECT * FROM userData WHERE userPhoneNumber=#{userPhoneNumber}	
+	</select>
+	
+	<select id="findPw" resultType="vo.UserData" parameterType="java.util.HashMap">
+		SELECT * FROM userData WHERE userId=#{userId} and userPhoneNumber=#{userPhoneNumber}
+	</select>
+	
+	<select id="selectAll" resultType="vo.UserData">
+		SELECT * FROM userData
+	</select>
+	
+	<select id="selectRank" resultType="vo.UserData">
+		SELECT * FROM userData order by userPoint desc
+	</select>
+	
+	<select id="selectRankMine" resultType="Integer" parameterType="String">
+		SELECT rk FROM (SELECT rank() OVER (ORDER BY userpoint desc) AS rk, userId, userPoint FROM userdata) WHERE userId=#{userId}
+	</select>
+	
+	<update id="cashToPoint" parameterType="java.util.HashMap">
+		UPDATE USERDATA SET userPoint=#{userPoint} WHERE userId=#{userId}
+	</update>
+	
+	<update id="userDataUpdate" parameterType="vo.UserData">
+		UPDATE USERDATA SET userPw=#{userPw},userGender=#{userGender},userPhoneNumber=#{userPhoneNumber},userPoint=#{userPoint},userAcc1=#{userAcc1},userAcc1Pw=#{userAcc1Pw},userAcc2=#{userAcc2},userAcc2Pw=#{userAcc2Pw},userAcc3=#{userAcc3},userAcc3Pw=#{userAcc3Pw} WHERE userId=#{userId}
+	</update>
+	
+	<update id="buyUpdate" parameterType="vo.UserData">
+		UPDATE USERDATA SET userPoint=#{userPoint} WHERE userId=#{userId}
+	</update>
+	
+	<update id="sellingImg" parameterType="java.util.HashMap">
+		UPDATE USERDATA SET userPoint=#{imgPoint} WHERE userId=#{imgUserId}
+	</update>
+	
+	<update id="UserUpdate" parameterType="java.util.HashMap">
+		UPDATE USERDATA SET userId=#{chUserId} WHERE userId=#{exUserId}
+	</update>
+	
+	<select id="selectOneUser" resultType="vo.UserData" parameterType="String">
+		SELECT * FROM userData WHERE userId=#{userId}	
+	</select>
+	
+	<delete id="deleteUser" parameterType="String">
+		DELETE FROM userData WHERE userId=#{userId}
+	</delete>
+	
+	<select id="selectSellerPoint" resultType="int" parameterType="String">
+		SELECT userpoint FROM userData WHERE userId=#{imgUserId}	
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
