@@ -5,43 +5,44 @@
 <mapper namespace="BuyBasketData">
 
 	<insert id="basketInsert" parameterType="vo.BuyBasketData">
-		INSERT INTO buyBasketData(buyIdx, userId, imgIdx, imgName, imgPoint, imgSubject, imgDetail, selling)
-		VALUES (buyIdx.nextval,#{userId},#{imgIdx},#{imgName},#{imgPoint},#{imgSubject}, #{imgDetail}, #{selling})
+		INSERT INTO gb.buyBasketData(userId, imgIdx, imgName, imgPoint, imgSubject, imgDetail, selling)
+		VALUES (#{userId},#{imgIdx},#{imgName},#{imgPoint},#{imgSubject}, #{imgDetail}, #{selling})
 	</insert>
 	
 	<select id="buyBasketCountByUser" resultType="int" parameterType="String">
-		select count(*) from buyBasketData where userId=#{userId} and selling='n'
+		select count(*) from gb.buyBasketData where userId=#{userId} and selling='n'
 	</select>
 	
 	<select id="totalPoint" resultType="int" parameterType="String">
-		SELECT sum(imgPoint) FROM buybasketData WHERE userId=#{userId} AND selling='n'
+		SELECT sum(imgPoint) FROM gb.buyBasketData WHERE userId=#{userId} AND selling='n'
 	</select>
 	
 	<select id="sellingCount" resultType="int" parameterType="String">
-		select count(*) from buyBasketData where userId=#{userId} and selling='y'
+		select count(*) from gb.buyBasketData where userId=#{userId} and selling='y'
 	</select>
 	
 	<select id="getBasketList" resultType="vo.BuyBasketData" parameterType="String">
-			SELECT * FROM buyBasketData WHERE userId=#{userId} and selling='n' ORDER BY buyidx DESC
+			SELECT * FROM gb.buyBasketData WHERE userId=#{userId} and selling='n' ORDER BY buyidx DESC
 	</select>
 
 	<select id="sellingList" resultType="vo.BuyBasketData" parameterType="String">
-			SELECT * FROM buyBasketData WHERE userId=#{userId} and selling='y' ORDER BY buyidx DESC
+			SELECT * FROM gb.buyBasketData WHERE userId=#{userId} and selling='y' ORDER BY buyidx DESC
 	</select>
 
 	<select id="getcheck" resultType="vo.BuyBasketData" parameterType="java.util.HashMap">
-			SELECT * FROM buyBasketData WHERE EXISTS (SELECT * FROM buyBasketData WHERE userId=#{userId} and imgIdx=#{userId})		
+			SELECT * FROM gb.buyBasketData WHERE EXISTS (SELECT * FROM buyBasketData WHERE userId=#{userId} and imgIdx=#{userId})a		
 	</select>
 		
 	<update id="buyBasketUpdate" parameterType="java.util.HashMap">
-			UPDATE buyBasketData SET selling='y' WHERE userId=#{userId} and imgIdx=#{imgIdx}
+			UPDATE gb.buyBasketData SET selling='y' WHERE userId=#{userId} and imgIdx=#{imgIdx}
 	</update>
 
 	<update id="sellBasketUpdate" parameterType="java.util.HashMap">
-			UPDATE buyBasketData SET selling='n' WHERE userId=#{userId} and imgIdx=#{imgIdx}
+			UPDATE gb.buyBasketData SET selling='n' WHERE userId=#{userId} and imgIdx=#{imgIdx}
 	</update>
 	
 	<delete id="deleteList" parameterType="java.util.HashMap">
-			delete from buyBasketData where userId=#{userId} and imgIdx=#{imgIdx}
+			delete from gb.buyBasketData where userId=#{userId} and imgIdx=#{imgIdx}
 	</delete>
+	
 </mapper> 

@@ -21,8 +21,8 @@
 	</select>
 	
 	<insert id="cmtInsert" parameterType="vo.CommentData">  
-		INSERT INTO freeboardData_comment (cmtIdx,mref,userId,content,wdate)
-		VALUES (cmtIdx.nextval,#{mref},#{userId},#{content},#{wdate})
+		INSERT INTO freeboardData_comment (mref,userId,content,wdate)
+		VALUES (#{mref},#{userId},#{content},#{wdate})
 	</insert>
 	
 	<delete id="commentDelete" parameterType="java.util.HashMap">

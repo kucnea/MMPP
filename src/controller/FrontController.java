@@ -1,11 +1,13 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -69,7 +71,11 @@ public class FrontController extends HttpServlet {
 		ImgboardDataDao imgboardDataDao = ImgboardDataDao.getInstance(); 
 		BuyBasketDataDao buyBasketDataDao = BuyBasketDataDao.getInstance(); 
 		
-		String path="c:\\upload";
+
+		String path = "/var/webapps/upload";
+		//이렇게 하면 톰캣밖으로 저장되는데 똑같이 불러와지는게 됐었는데 안되네
+//		String path = "/img_path/";
+//		String path="c:\\upload";
 		int size=10*1024*1024;
 		
 		
@@ -542,10 +548,13 @@ public class FrontController extends HttpServlet {
 			UserData userData = (UserData)session.getAttribute("userData");
 			request.setCharacterEncoding("utf-8");
 			try {
-				
+			File upDir = new File(path);
+			if(!upDir.exists()) {
+				upDir.mkdirs();
+			}
 			MultipartRequest multi_request = new MultipartRequest(request,path,size,"UTF-8",
 																		new DefaultFileRenamePolicy());
-				
+				//여기
 			System.out.println("img insert level 1");
 			if(session.getAttribute("userData")==null) {
 				request.setAttribute("fail", "y");

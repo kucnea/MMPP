@@ -5,49 +5,51 @@
 <mapper namespace="FreeboardData"> 
 
 <select id="getCount" resultType="int">
-	select count(*) from freeboardData
+	select count(*) from gb.freeboardData
 </select>	
 
 <select id="getCountSD" resultType="int" parameterType="String">
-	select count(*) from freeboardData where (${option}) like  '%${search}%'
+	select count(*) from gb.freeboardData where (${option}) like  '%${search}%'
 </select>	
 
 <select id="getList" fetchSize="1000" resultType="vo.FreeboardData">
 	<![CDATA[
+		set @rownum=0;
 		select * from
-		(select  rownum as R, T.* 
-		from freeboardData T where rownum<=#{endNo}) where #{startNo}<=R ORDER BY idx DESC
+		(select @rownum:=@rownum+1 as R, T.* 
+		from gb.freeboardData T where @rownum<=#{endNo})a where #{startNo}<=R ORDER BY idx DESC;
  	]]>
 </select>
 
 <select id="getListSD" fetchSize="1000" resultType="vo.FreeboardData" parameterType="java.util.HashMap">
 	<![CDATA[
+		set @rownum=0;
 		select * from
-		(select rownum as R, T.* 
-		from (select * from freeboardData where (${option}) like '%${search}%') T where rownum<=#{endNo}) where #{startNo}<=R
+		(select @rownum:=@rownum+1 as R, T.* 
+		from (select * from gb.freeboardData where (${option}) like '%${search}%') T where @rownum<=#{endNo})a where #{startNo}<=R;
  	]]>
 </select>
 
 <update id="updateCount" parameterType="int">
-	update freeboardData set READCOUNT=READCOUNT+1 where idx=#{idx}
+	update gb.freeboardData set READCOUNT=READCOUNT+1 where idx=#{idx}
 </update>	
 
 <select id="selectByIdx" resultType="vo.FreeboardData" parameterType="int">
-	select * from freeboardData where idx=#{idx}
+	select * from gb.freeboardData where idx=#{idx}
 </select>	
 
 <insert id="insert" parameterType="vo.FreeboardData">
-	insert into freeboardData(idx,userId,subject,content,readcount,wdate,commentCount)
-	values (idx.nextval,#{userId},#{subject},#{content},'0',#{wdate},'0')
+	insert into gb.freeboardData(userId,`subject`,content,readcount,wdate,commentCount)
+	values (#{userId},#{subject},#{content},'0',#{wdate},'0')
 </insert>
 
-<update id="update" parameterType="vo.FreeboardData"> <!-- 제목,내용 수정-->
-update freeboardData set subject=#{subject},content=#{content} 
+<update id="update" parameterType="vo.FreeboardData">
+update gb.freeboardData set subject=#{subject},content=#{content} 
 where idx=#{idx}
 </update>
 
 <delete id="delete" parameterType="int">
-delete from freeboardData where idx=#{idx}
+delete from gb.freeboardData where idx=#{idx}
 </delete>
 
 

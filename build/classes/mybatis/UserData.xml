@@ -10,7 +10,7 @@
 	
 	
 	<insert id="addUserData" parameterType="vo.UserData" >
-			insert into UserData(userId, userPw, userGender, userPhoneNumber, userPoint, userAcc1, userAcc1Pw) 
+			insert into userData(userId, userPw, userGender, userPhoneNumber, userPoint, userAcc1, userAcc1Pw) 
 			values (#{userId},#{userPw},#{userGender},#{userPhoneNumber},#{userPoint},#{userAcc1},#{userAcc1Pw})
 	</insert>
 	
@@ -36,27 +36,28 @@
 	</select>
 	
 	<select id="selectRankMine" resultType="Integer" parameterType="String">
-		SELECT rk FROM (SELECT rank() OVER (ORDER BY userpoint desc) AS rk, userId, userPoint FROM userdata) WHERE userId=#{userId}
+		set @rnum := 0;
+		SELECT rk FROM (SELECT @rnum := @rnum + 1 as rk, userId, userPoint FROM gb.userData order by userpoint desc)a WHERE userId=#{userId};
 	</select>
 	
 	<update id="cashToPoint" parameterType="java.util.HashMap">
-		UPDATE USERDATA SET userPoint=#{userPoint} WHERE userId=#{userId}
+		UPDATE userData SET userPoint=#{userPoint} WHERE userId=#{userId}
 	</update>
 	
 	<update id="userDataUpdate" parameterType="vo.UserData">
-		UPDATE USERDATA SET userPw=#{userPw},userGender=#{userGender},userPhoneNumber=#{userPhoneNumber},userPoint=#{userPoint},userAcc1=#{userAcc1},userAcc1Pw=#{userAcc1Pw},userAcc2=#{userAcc2},userAcc2Pw=#{userAcc2Pw},userAcc3=#{userAcc3},userAcc3Pw=#{userAcc3Pw} WHERE userId=#{userId}
+		UPDATE userData SET userPw=#{userPw},userGender=#{userGender},userPhoneNumber=#{userPhoneNumber},userPoint=#{userPoint},userAcc1=#{userAcc1},userAcc1Pw=#{userAcc1Pw},userAcc2=#{userAcc2},userAcc2Pw=#{userAcc2Pw},userAcc3=#{userAcc3},userAcc3Pw=#{userAcc3Pw} WHERE userId=#{userId}
 	</update>
 	
 	<update id="buyUpdate" parameterType="vo.UserData">
-		UPDATE USERDATA SET userPoint=#{userPoint} WHERE userId=#{userId}
+		UPDATE userData SET userPoint=#{userPoint} WHERE userId=#{userId}
 	</update>
 	
 	<update id="sellingImg" parameterType="java.util.HashMap">
-		UPDATE USERDATA SET userPoint=#{imgPoint} WHERE userId=#{imgUserId}
+		UPDATE userData SET userPoint=#{imgPoint} WHERE userId=#{imgUserId}
 	</update>
 	
 	<update id="UserUpdate" parameterType="java.util.HashMap">
-		UPDATE USERDATA SET userId=#{chUserId} WHERE userId=#{exUserId}
+		UPDATE userData SET userId=#{chUserId} WHERE userId=#{exUserId}
 	</update>
 	
 	<select id="selectOneUser" resultType="vo.UserData" parameterType="String">
