@@ -72,7 +72,7 @@ public class FrontController extends HttpServlet {
 		BuyBasketDataDao buyBasketDataDao = BuyBasketDataDao.getInstance(); 
 		
 
-		String path = "/var/webapps/upload";
+		String path = "/var/webapps/upload/forMMPP4";
 		//이렇게 하면 톰캣밖으로 저장되는데 똑같이 불러와지는게 됐었는데 안되네
 //		String path = "/img_path/";
 //		String path="c:\\upload";
